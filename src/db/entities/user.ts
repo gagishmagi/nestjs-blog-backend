@@ -1,14 +1,15 @@
 import { Entity, BaseEntity, Column, BeforeInsert, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from "typeorm";
-import { bcrypt } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { IsEmail } from "class-validator";
+import { classToPlain } from 'class-transformer';
 
 @Entity('users')
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number 
 
-    @Column()
     @IsEmail()
+    @Column({unique: true})
     email: string
 
     @Column({unique: true})
@@ -33,10 +34,25 @@ export class User extends BaseEntity {
 
     @BeforeInsert()
     async hashPassword(){
-        this.password = await bcrypt.hash(this.password)
+        this.password = await hash(this.password,"secret")
     }
 
     async comparePassword(attept: string){
-        return await bcrypt.compare(attept, this.password)
+        return await compare(attept, this.password)
     }
+
+    toJSON(){
+        return classToPlain(this)
+    }
+
+    toProfile(user ? : User){
+        let following = null;
+        if(user){
+            // following = this.followers.includes(user)
+        }
+        const profile : any = this.toJSON();
+        delete profile.followers;
+        return {...profile, following}
+    }
+
 }

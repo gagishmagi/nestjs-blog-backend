@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { DatabaseConnectionService } from './database-connection/database-connection.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
 import { ProfileController } from './profile/profile.controller';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [TypeOrmModule.forRootAsync({
