@@ -10,8 +10,8 @@ export class JwtStratagy extends PassportStrategy(Strategy){
 
     constructor( @InjectRepository(User) private userRepo: Repository<User> ){
         super({
-            jwtFromRequest: ExtractJwt.fromHeader("authorization") ,
-            secretOrKey: 'hummus'
+            jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+            secretOrKey: process.env.SECRET
         });
     }
 

@@ -2,7 +2,6 @@ import { Controller, Get, Param, UseGuards, Body, NotFoundException } from '@nes
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/db/entities/user';
 import { ProfileResponse } from 'src/models/user.model';
-import { Profile } from 'passport';
 import { UserService } from 'src/user/user.service';
 
 @Controller('profile')

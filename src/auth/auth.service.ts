@@ -25,18 +25,21 @@ export class AuthService {
         // return this.mockUser            
         try {
             const user = await this.userRepo.findOne({where : {email: credentials.email} })
-            // const isValid = await user.comparePassword(credentials.password);
-            // console.log(isValid);
+            
+            const isValid = await user.comparePassword(credentials.password);
 
-            // if(!isValid){
-            //     throw new UnauthorizedException('Invalid credentials')
-            // }
+            if(!isValid){
+                throw new UnauthorizedException('Invalid credentials')
+            }
             const payload = {username :user.username}
             const token = this.jwtService.sign(payload)
             
-            return {user : { ...user, token}}
+            const { password, ...other } = user
+
+            return {user : { ...other , token}}
             
         } catch (err) {
+            
             if(err.code === "23505"){
                 throw new  ConflictException(`this user with current username already has token`)
             }

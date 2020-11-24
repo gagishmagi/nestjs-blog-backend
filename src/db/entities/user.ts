@@ -21,7 +21,7 @@ export class User extends BaseEntity {
     @Column({default: null, nullable: true})
     image: string | null
 
-    @Column({select:false})
+    @Column()
     password: string
 
 
@@ -34,10 +34,12 @@ export class User extends BaseEntity {
 
     @BeforeInsert()
     async hashPassword(){
-        this.password = await hash(this.password,"secret")
+        this.password = await hash(this.password,10)
     }
 
     async comparePassword(attept: string){
+        console.log(attept)
+        console.log(this)
         return await compare(attept, this.password)
     }
 
